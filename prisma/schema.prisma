@@ -56,6 +56,7 @@ model WorkoutDay {
   createdAt                  DateTime          @default(now())
   updatedAt                  DateTime          @updatedAt
   sessions                   WorkoutSession[]
+  coverImageUrl                String?
 }
 
 model WorkoutExercise {
