@@ -110,15 +110,9 @@ export class GetHomeData {
   ): Promise<number> {
     let streak = 0;
     let currentDate = date;
+    const maxDays = 365;
 
-    while (true) {
-      const currentWeekDay = WEEKDAY_MAP[currentDate.day()];
-
-      if (!planWeekDays.includes(currentWeekDay)) {
-        currentDate = currentDate.subtract(1, "day");
-        continue;
-      }
-
+    for (let i = 0; i < maxDays; i++) {
       const dayStart = currentDate.startOf("day").toDate();
       const dayEnd = currentDate.endOf("day").toDate();
 
@@ -138,11 +132,18 @@ export class GetHomeData {
         },
       });
 
-      if (!session) {
+      if (session) {
+        streak++;
+        currentDate = currentDate.subtract(1, "day");
+        continue;
+      }
+
+      const currentWeekDay = WEEKDAY_MAP[currentDate.day()];
+
+      if (planWeekDays.includes(currentWeekDay)) {
         break;
       }
 
-      streak++;
       currentDate = currentDate.subtract(1, "day");
     }
 

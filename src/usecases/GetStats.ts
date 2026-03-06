@@ -93,7 +93,8 @@ export class GetStats {
       }
       const start = dayjs.utc(session.startedAt);
       const end = dayjs.utc(session.completedAt);
-      return total + end.diff(start, "second");
+      const diff = end.diff(start, "second");
+      return total + Math.max(0, diff);
     }, 0);
 
     const workoutStreak = await this.calculateStreak(dto.userId, dayjs.utc());
@@ -123,15 +124,9 @@ export class GetStats {
     const planWeekDays = activePlan.workoutDays.map((d) => d.weekDay);
     let streak = 0;
     let currentDate = date;
+    const maxDays = 365;
 
-    while (true) {
-      const currentWeekDay = WEEKDAY_MAP[currentDate.day()];
-
-      if (!planWeekDays.includes(currentWeekDay)) {
-        currentDate = currentDate.subtract(1, "day");
-        continue;
-      }
-
+    for (let i = 0; i < maxDays; i++) {
       const dayStart = currentDate.startOf("day").toDate();
       const dayEnd = currentDate.endOf("day").toDate();
 
@@ -151,11 +146,18 @@ export class GetStats {
         },
       });
 
-      if (!session) {
+      if (session) {
+        streak++;
+        currentDate = currentDate.subtract(1, "day");
+        continue;
+      }
+
+      const currentWeekDay = WEEKDAY_MAP[currentDate.day()];
+
+      if (planWeekDays.includes(currentWeekDay)) {
         break;
       }
 
-      streak++;
       currentDate = currentDate.subtract(1, "day");
     }
 
