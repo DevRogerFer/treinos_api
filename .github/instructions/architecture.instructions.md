@@ -7,6 +7,7 @@ description: "Regras de arquitetura: rotas Fastify, use cases, Git commits"
 
 - **SEMPRE** use [Conventional Commits](https://www.conventionalcommits.org/) para mensagens de commit. Exemplo: `feat: add start workout session endpoint`, `fix: workout plan validation`, `docs: update architecture rules`.
 - **NUNCA** faça commit sem a permissão explícita do usuário. Sempre aguarde o usuário pedir para commitar.
+- **SEMPRE** inclua os arquivos de prompt `.md` da pasta `tasks/` no commit quando a implementação for baseada em uma task.
 
 ## Fastify: Rotas de API
 
