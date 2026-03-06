@@ -152,3 +152,12 @@ export const StatsResponseSchema = z.object({
   conclusionRate: z.number(),
   totalTimeInSeconds: z.number(),
 });
+
+export const ListWorkoutPlansQuerySchema = z.object({
+  active: z
+    .enum(["true", "false"])
+    .transform((val) => val === "true")
+    .optional(),
+});
+
+export const ListWorkoutPlansResponseSchema = z.array(WorkoutPlanSchema);
