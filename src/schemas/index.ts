@@ -161,3 +161,19 @@ export const ListWorkoutPlansQuerySchema = z.object({
 });
 
 export const ListWorkoutPlansResponseSchema = z.array(WorkoutPlanSchema);
+
+export const UpsertUserTrainDataBodySchema = z.object({
+  weightInGrams: z.number().int().min(1),
+  heightInCentimeters: z.number().int().min(1),
+  age: z.number().int().min(1),
+  bodyFatPercentage: z.number().int().min(0).max(100),
+});
+
+export const UserTrainDataResponseSchema = z.object({
+  userId: z.string(),
+  userName: z.string(),
+  weightInGrams: z.number(),
+  heightInCentimeters: z.number(),
+  age: z.number(),
+  bodyFatPercentage: z.number().min(0).max(100),
+});
