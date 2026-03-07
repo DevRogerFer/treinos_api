@@ -140,6 +140,10 @@ export class GetHomeData {
       const currentWeekDay = WEEKDAY_MAP[currentDate.day()];
 
       if (planWeekDays.includes(currentWeekDay)) {
+        if (i === 0) {
+          currentDate = currentDate.subtract(1, "day");
+          continue;
+        }
         break;
       }
 
