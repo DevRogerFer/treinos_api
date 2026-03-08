@@ -60,10 +60,10 @@ export const HomeParamsSchema = z.object({
 });
 
 export const HomeResponseSchema = z.object({
-  activeWorkoutPlanId: z.uuid(),
+  activeWorkoutPlanId: z.uuid().optional(),
   todayWorkoutDay: z
     .object({
-      workoutPlanId: z.uuid(),
+      workoutPlanId: z.uuid().optional(),
       id: z.uuid(),
       name: z.string(),
       isRest: z.boolean(),

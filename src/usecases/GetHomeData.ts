@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 
-import { NotFoundError } from "../errors/index.js";
 import { WeekDay } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
@@ -23,9 +22,9 @@ interface InputDto {
 }
 
 interface OutputDto {
-  activeWorkoutPlanId: string;
+  activeWorkoutPlanId?: string;
   todayWorkoutDay?: {
-    workoutPlanId: string;
+    workoutPlanId?: string;
     id: string;
     name: string;
     isRest: boolean;
@@ -63,18 +62,14 @@ export class GetHomeData {
       },
     });
 
-    if (!workoutPlan) {
-      throw new NotFoundError("Active workout plan not found");
-    }
-
-    const todayWorkoutDay = workoutPlan.workoutDays.find(
+    const todayWorkoutDay = workoutPlan?.workoutDays.find(
       (day) => day.weekDay === weekDayEnum,
     );
 
     const workoutStreak = await this.calculateStreak(
       dto.userId,
       date,
-      workoutPlan.workoutDays.map((d) => d.weekDay),
+      workoutPlan?.workoutDays.map((d) => d.weekDay) ?? [],
     );
 
     const consistencyByDay = await this.calculateConsistencyByDay(
@@ -83,10 +78,10 @@ export class GetHomeData {
     );
 
     return {
-      activeWorkoutPlanId: workoutPlan.id,
+      activeWorkoutPlanId: workoutPlan?.id,
       todayWorkoutDay: todayWorkoutDay
         ? {
-            workoutPlanId: workoutPlan.id,
+            workoutPlanId: workoutPlan?.id,
             id: todayWorkoutDay.id,
             name: todayWorkoutDay.name,
             isRest: todayWorkoutDay.isRest,

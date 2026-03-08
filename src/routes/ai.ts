@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google";
+import { openai } from "@ai-sdk/openai";
 import {
   convertToModelMessages,
   stepCountIs,
@@ -42,7 +42,7 @@ export const aiRoutes = async (app: FastifyInstance) => {
       }
       const { messages } = request.body as { messages: UIMessage[] };
       const result = streamText({
-        model: google("gemini-2.5-flash"),
+        model: openai("gpt-4o-mini"),
         system: `Você é um personal trainer virtual especialista em montagem de planos de treino de musculação.
 
 ## Personalidade
@@ -209,7 +209,7 @@ Alterne entre as duas opções de cada categoria para variar. Dias de descanso u
             },
           }),
         },
-        stopWhen: stepCountIs(5),
+        stopWhen: stepCountIs(10),
         messages: await convertToModelMessages(messages),
       });
       const response = result.toUIMessageStreamResponse();
