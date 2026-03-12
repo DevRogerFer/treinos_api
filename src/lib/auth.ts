@@ -22,6 +22,7 @@ export const auth = betterAuth({
   advanced: {
     crossSubDomainCookies: {
       enabled: true,
+      domain: `.${new URL(env.WEB_APP_BASE_URL).hostname.split(".").slice(-2).join(".")}`,
     },
   }
 });
